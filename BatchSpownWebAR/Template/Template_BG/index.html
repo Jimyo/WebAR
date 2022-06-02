@@ -1,0 +1,109 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
+
+    <script src="./dist/jin-mindar-image.prod.js"></script>
+    <script src="./dist/jin-mindar-image-aframe.prod.js"></script>
+
+    <!-- Gif -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <script>
+      
+      const showInfo = () => 
+        {
+          var webButton = document.getElementsByClassName("clickable");//('web-button');
+          //console.log(webButton.length);
+          for (let index = 0; index < webButton.length; index++) 
+          {
+            webButton[index]
+            webButton[index].addEventListener('click', 
+            function (evt){
+              window.location.href="https://www.parazen.world/";
+            });
+          }
+        };
+
+      const testUI = () =>
+        {
+          var webButtonUI = document.getElementById("web-button");
+            webButtonUI.setAttribute("visible", true);
+            webButtonUI.addEventListener('click', 
+                  function (evt){
+                    window.location.href="https://www.parazen.world/";
+                  });
+        }
+        
+      AFRAME.registerComponent('mytarget', {
+        init: function () {
+          this.el.addEventListener('targetFound', event => {
+            showInfo();
+            testUI();
+            console.log(this.el.object3D);
+          });
+          this.el.addEventListener('targetLost', event => {
+          });
+        }
+      });
+
+      var webButtonUI;
+      AFRAME.registerComponent('upui',
+      {
+        tick: function()
+        {
+          if(webButtonUI == null)
+          {
+            webButtonUI = document.getElementById("web-button");
+          }
+          var sca = document.getElementById("example-scanning-overlay");
+            if(sca.className == "")
+            {
+              webButtonUI.setAttribute("visible", false);
+            }
+            else
+            {
+              webButtonUI.setAttribute("visible", true);
+            }
+        }
+      });
+    
+    </script>
+
+    <link rel="StyleSheet" href="./CSS/BusinessCardStyle.css">
+  </head>
+ 
+  <body>
+    
+      <div id="example-scanning-overlay" class="hidden">
+        <div class="inner">
+          <img src="./scoure/Image/scan.png"/>
+          
+          <lottie-player class="scanline" src="./scoure/lf30_editor_z6asshuq.json"  background="transparent"  speed="1"   loop autoplay></lottie-player> <!--style="width: 90%; height: 100%;"-->
+          <!-- <div class="scanline">
+          </div> -->
+        </div>
+      </div>
+     
+    
+    <a-scene upui mindar-image="imageTargetSrc: {{ Mind }}; maxTrack: 4; uiScanning: #example-scanning-overlay;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <!-- <a-scene upui mindar-image="imageTargetSrc: ./scoure/Mind/costomFourTags.mind; maxTrack: 4; uiScanning: #example-scanning-overlay;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"> -->
+      
+      <a-assets>
+        <img id="icon-web" src="./scoure/Image/modal_parazens.png" />
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable">
+        
+      </a-camera>
+      <a-image visible=false id="web-button" class="clickable" src="#icon-web" alpha-test="0.5" position="0 -3 -10" height="1.2" width="2.5"></a-image>
+     
+      {{ Model }}
+
+    </a-scene>
+  
+  </body>
+</html>
